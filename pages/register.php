@@ -1,8 +1,9 @@
 <?php
 //  AcmlmBoard XD - User account registration page
 //  Access: any, but meant for guests.
+if (!defined('BLARG')) die();
 
-require('config/kurikey.php');
+require(BOARD_ROOT.'config/kurikey.php');
 
 
 $title = __("Register");
@@ -104,7 +105,7 @@ if($_POST['register'])
 		$user = Fetch(Query("select * from {users} where id={0}", $uid));
 		$user['rawpass'] = $_POST['pass'];
 
-		$bucket = "newuser"; include("lib/pluginloader.php");
+		$bucket = "newuser"; include(BOARD_ROOT."lib/pluginloader.php");
 		
 		
 		$rLogUser = Query("select id, pss, password from {users} where 1");
@@ -130,7 +131,7 @@ if($_POST['register'])
 		if($_POST['autologin'])
 		{
 			$sessionID = Shake();
-			setcookie("logsession", $sessionID, 0, BOARD_ROOT, "", false, true);
+			setcookie("logsession", $sessionID, 0, URL_ROOT, "", false, true);
 			Query("INSERT INTO {sessions} (id, user, autoexpire) VALUES ({0}, {1}, {2})", doHash($sessionID.SALT), $user['id'], 0);
 			die(header("Location: ".actionLink('profile', $user['id'], '', $user['name'])));
 		}

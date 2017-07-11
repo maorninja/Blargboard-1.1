@@ -1,4 +1,5 @@
 <?php
+if (!defined('BLARG')) die();
 
 $viewableforums = ForumsWithPermission('forum.viewforum');
 	
@@ -30,7 +31,7 @@ while ($lp = Fetch($lastposts))
 	$lastActivity[$lp['t_lastpostdate']] = array('description' => $desc, 'formattedDate' => $fmtdate);
 }
 
-$bucket = 'lastactivity'; include('lib/pluginloader.php');
+$bucket = 'lastactivity'; include(BOARD_ROOT.'lib/pluginloader.php');
 
 krsort($lastActivity);
 $lastActivity = array_slice($lastActivity, 0, $maxitems);
@@ -59,7 +60,7 @@ else
 $tpp = 5;
 
 //echo '<br>';
-$links = array('<a href="'.BOARD_ROOT.'rss.php">'.__('RSS feed').'</a>');
+$links = array('<a href="'.URL_ROOT.'rss.php">'.__('RSS feed').'</a>');
 if (HasPermission('forum.postthreads', $forum['id']))
 	$links[] = actionLinkTag(__('Post new'), 'newthread', $forum['id']);
 

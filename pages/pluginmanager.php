@@ -1,4 +1,5 @@
 <?php
+if (!defined('BLARG')) die();
 
 $title = "Plugin Manager";
 
@@ -13,6 +14,7 @@ if($_REQUEST['action'] == "enable")
 		Kill("No.");
 
 	Query("insert into {enabledplugins} values ({0})", $_REQUEST['id']);
+	require(BOARD_ROOT.'db/functions.php');
 	Upgrade();
 
 	die(header("location: ".actionLink("pluginmanager")));
@@ -28,7 +30,7 @@ if($_REQUEST['action'] == "disable")
 
 
 $cell = 0;
-$pluginsDir = @opendir("plugins");
+$pluginsDir = @opendir(BOARD_ROOT."plugins");
 
 $enabledplugins = array();
 $disabledplugins = array();
@@ -39,7 +41,7 @@ if($pluginsDir !== FALSE)
 	while(($plugin = readdir($pluginsDir)) !== FALSE)
 	{
 		if($plugin == "." || $plugin == "..") continue;
-		if(is_dir("./plugins/".$plugin))
+		if(is_dir(BOARD_ROOT."plugins/".$plugin))
 		{
 			try
 			{
@@ -82,7 +84,7 @@ function listPlugin($plugin, $plugindata)
 	$pdata = $plugindata;
 	
 	$hasperms = false;
-	if (!isset($plugins[$plugin]) && file_exists('plugins/'.$plugin.'/permStrings.php'))
+	if (!isset($plugins[$plugin]) && file_exists(BOARD_ROOT.'plugins/'.$plugin.'/permStrings.php'))
 		$hasperms = true;
 		
 	if ($hasperms)

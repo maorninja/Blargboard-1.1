@@ -1,6 +1,7 @@
 <?php
 //  AcmlmBoard XD - User profile page
 //  Access: all
+if (!defined('BLARG')) die();
 
 $id = (int)$_REQUEST['id'];
 
@@ -131,9 +132,9 @@ $emailField = __("Private");
 if($user['email'] == "")
 	$emailField = __("None given");
 else if ($user['showemail'])
-	$emailField = "<span id=\"emailField\">".__("Public")." <button style=\"font-size: 0.7em;\" onclick=\"$(this.parentNode).load('".BOARD_ROOT."ajaxcallbacks.php?a=em&amp;id=".$id."');\">".__("Show")."</button></span>";
+	$emailField = "<span id=\"emailField\">".__("Public")." <button style=\"font-size: 0.7em;\" onclick=\"$(this.parentNode).load('".URL_ROOT."ajaxcallbacks.php?a=em&amp;id=".$id."');\">".__("Show")."</button></span>";
 else if (HasPermission('admin.editusers'))
-	$emailField = "<span id=\"emailField\">".__("Private")." <button style=\"font-size: 0.7em;\" onclick=\"$(this.parentNode).load('".BOARD_ROOT."ajaxcallbacks.php?a=em&amp;id=".$id."');\">".__("Snoop")."</button></span>";
+	$emailField = "<span id=\"emailField\">".__("Private")." <button style=\"font-size: 0.7em;\" onclick=\"$(this.parentNode).load('".URL_ROOT."ajaxcallbacks.php?a=em&amp;id=".$id."');\">".__("Snoop")."</button></span>";
 
 
 $profileParts = array();
@@ -143,7 +144,7 @@ $temp[__("Name")] = $minipic . htmlspecialchars($user['displayname'] ? $user['di
 if($title)
 	$temp[__("Title")] = $title;
 	
-$glist = '<strong style="color: '.htmlspecialchars($ugroup['color_unspec']).';">'.htmlspecialchars($ugroup['name']).'</strong>';
+$glist = '<strong class="userlink" style="color: '.htmlspecialchars($ugroup['color_unspec']).';">'.htmlspecialchars($ugroup['name']).'</strong>';
 foreach ($usgroups as $sgroup)
 {
 	if ($sgroup['display'] > -1)
@@ -257,7 +258,7 @@ if(NumRows($badgersR))
 }
 
 
-$bucket = "profileTable"; include("./lib/pluginloader.php");
+$bucket = "profileTable"; include(BOARD_ROOT."lib/pluginloader.php");
 
 
 
